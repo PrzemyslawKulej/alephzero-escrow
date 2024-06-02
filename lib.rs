@@ -5,6 +5,7 @@ mod escrow {
     use ink::contract_ref;
     use ink::storage::Mapping;
     use psp22::PSP22;
+
     #[ink(storage)]
     pub struct Escrow {
         accounts: Mapping<AccountId, Balance>,
@@ -38,16 +39,16 @@ mod escrow {
         pub fn deposit(&mut self, amount: Balance) {
             let caller = self.env().caller();
             let contract_account_id = self.env().account_id();
-            // Utworzenie instancji kontraktu `Token`
             let mut token: contract_ref!(PSP22) = self.token.into();
 
-            // Wywołanie metody `transfer_from`
             token
                 .transfer_from(caller, contract_account_id, amount, Vec::new())
                 .expect("Transfer failed");
 
             let balance = self.accounts.get(&caller).unwrap_or_default();
-            self.accounts.insert(caller, &(balance + amount));
+            let new_balance = balance.checked_add(amount).expect("Overflow detected");
+            self.accounts.insert(caller, &new_balance);
+
             self.env().emit_event(Deposited {
                 from: caller,
                 amount: amount,
@@ -58,19 +59,20 @@ mod escrow {
         pub fn withdraw(&mut self, amount: Balance) {
             let caller = self.env().caller();
             let balance = self.accounts.get(&caller).unwrap_or_default();
-            if balance >= amount {
-                let mut token: contract_ref!(PSP22) = self.token.into();
 
-                token
-                    .transfer(caller, amount, Vec::new())
-                    .expect("Transfer failed");
+            assert!(balance >= amount, "Insufficient balance");
 
-                self.accounts.insert(caller, &(balance - amount));
-                self.env().emit_event(Withdrawn {
-                    to: caller,
-                    amount: amount,
-                });
-            }
+            let new_balance = balance.checked_sub(amount).expect("Underflow detected");
+            self.accounts.insert(caller, &new_balance);
+            self.env().emit_event(Withdrawn {
+                to: caller,
+                amount: amount,
+            });
+
+            let mut token: contract_ref!(PSP22) = self.token.into();
+            token
+                .transfer(caller, amount, Vec::new())
+                .expect("Transfer failed");
         }
 
         #[ink(message)]
@@ -83,16 +85,15 @@ mod escrow {
     #[cfg(test)]
     mod tests {
         use super::*;
-        use crate::escrow::AccountId;
         use ink_lang as ink;
 
         #[ink::test]
         fn test_new() {
-            let token: AccountId = AccountId::from([0x0; 32]); // Użyj konkretnej wartości AccountId
+            let token: AccountId = AccountId::from([0x0; 32]);
             let contract = Escrow::new(token);
             assert_eq!(contract.token, token);
-            // Additional assertions to check the initial state
-            let caller = AccountId::from([0x1; 32]); // Użyj konkretnej wartości AccountId
+
+            let caller = AccountId::from([0x1; 32]);
             assert_eq!(contract.accounts.get(&caller), None);
         }
     }
