@@ -1,0 +1,9 @@
+{
+  "dependencies": {
+    "@polkadot/api": "^11.2.1",
+    "@polkadot/api-contract": "^11.2.1",
+    "@polkadot/keyring": "^12.6.2",
+    "@types/node": "^20.14.0",
+    "typescript": "^5.4.5"
+  }
+}

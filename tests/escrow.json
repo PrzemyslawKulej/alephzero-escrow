@@ -1,0 +1,450 @@
+{
+  "source": {
+    "hash": "0x5d381127e628b4e5b950d06f654d92dba1b9a6083742757cd110163fe2730bba",
+    "language": "ink! 4.3.0",
+    "compiler": "rustc 1.80.0-nightly",
+    "build_info": {
+      "build_mode": "Debug",
+      "cargo_contract_version": "3.2.0",
+      "rust_toolchain": "nightly-x86_64-unknown-linux-gnu",
+      "wasm_opt_settings": {
+        "keep_debug_symbols": false,
+        "optimization_passes": "Z"
+      }
+    }
+  },
+  "contract": {
+    "name": "escrowcontract",
+    "version": "1.0.0",
+    "authors": ["Przemyslaw Kulej"]
+  },
+  "spec": {
+    "constructors": [
+      {
+        "args": [
+          {
+            "label": "token",
+            "type": {
+              "displayName": ["AccountId"],
+              "type": 1
+            }
+          }
+        ],
+        "default": false,
+        "docs": [
+          "Constructor to initialize the escrow with the PSP22 token contract address."
+        ],
+        "label": "new",
+        "payable": false,
+        "returnType": {
+          "displayName": ["ink_primitives", "ConstructorResult"],
+          "type": 4
+        },
+        "selector": "0x9bae9d5e"
+      }
+    ],
+    "docs": [],
+    "environment": {
+      "accountId": {
+        "displayName": ["AccountId"],
+        "type": 1
+      },
+      "balance": {
+        "displayName": ["Balance"],
+        "type": 0
+      },
+      "blockNumber": {
+        "displayName": ["BlockNumber"],
+        "type": 10
+      },
+      "chainExtension": {
+        "displayName": ["ChainExtension"],
+        "type": 11
+      },
+      "hash": {
+        "displayName": ["Hash"],
+        "type": 8
+      },
+      "maxEventTopics": 4,
+      "timestamp": {
+        "displayName": ["Timestamp"],
+        "type": 9
+      }
+    },
+    "events": [
+      {
+        "args": [
+          {
+            "docs": [],
+            "indexed": true,
+            "label": "from",
+            "type": {
+              "displayName": ["AccountId"],
+              "type": 1
+            }
+          },
+          {
+            "docs": [],
+            "indexed": false,
+            "label": "amount",
+            "type": {
+              "displayName": ["Balance"],
+              "type": 0
+            }
+          }
+        ],
+        "docs": ["Event emitted when a deposit is made to the escrow."],
+        "label": "Deposited"
+      },
+      {
+        "args": [
+          {
+            "docs": [],
+            "indexed": true,
+            "label": "to",
+            "type": {
+              "displayName": ["AccountId"],
+              "type": 1
+            }
+          },
+          {
+            "docs": [],
+            "indexed": false,
+            "label": "amount",
+            "type": {
+              "displayName": ["Balance"],
+              "type": 0
+            }
+          }
+        ],
+        "docs": ["Event emitted when a withdrawal is made from the escrow."],
+        "label": "Withdrawn"
+      }
+    ],
+    "lang_error": {
+      "displayName": ["ink", "LangError"],
+      "type": 6
+    },
+    "messages": [
+      {
+        "args": [
+          {
+            "label": "spender",
+            "type": {
+              "displayName": ["AccountId"],
+              "type": 1
+            }
+          },
+          {
+            "label": "amount",
+            "type": {
+              "displayName": ["Balance"],
+              "type": 0
+            }
+          }
+        ],
+        "default": false,
+        "docs": [
+          " Approves the escrow contract to spend a specified amount of tokens on behalf of the caller."
+        ],
+        "label": "approve",
+        "mutates": true,
+        "payable": false,
+        "returnType": {
+          "displayName": ["ink", "MessageResult"],
+          "type": 4
+        },
+        "selector": "0x681266a0"
+      },
+      {
+        "args": [
+          {
+            "label": "amount",
+            "type": {
+              "displayName": ["Balance"],
+              "type": 0
+            }
+          }
+        ],
+        "default": false,
+        "docs": [" Deposits a specified amount of tokens into the escrow."],
+        "label": "deposit",
+        "mutates": true,
+        "payable": false,
+        "returnType": {
+          "displayName": ["ink", "MessageResult"],
+          "type": 4
+        },
+        "selector": "0x2d10c9bd"
+      },
+      {
+        "args": [
+          {
+            "label": "amount",
+            "type": {
+              "displayName": ["Balance"],
+              "type": 0
+            }
+          }
+        ],
+        "default": false,
+        "docs": [" Withdraws a specified amount of tokens from the escrow."],
+        "label": "withdraw",
+        "mutates": true,
+        "payable": false,
+        "returnType": {
+          "displayName": ["ink", "MessageResult"],
+          "type": 4
+        },
+        "selector": "0x410fcc9d"
+      },
+      {
+        "args": [
+          {
+            "label": "account",
+            "type": {
+              "displayName": ["AccountId"],
+              "type": 1
+            }
+          }
+        ],
+        "default": false,
+        "docs": [" Gets the balance of tokens for a specified account."],
+        "label": "get_balance",
+        "mutates": false,
+        "payable": false,
+        "returnType": {
+          "displayName": ["ink", "MessageResult"],
+          "type": 7
+        },
+        "selector": "0xea817e65"
+      }
+    ]
+  },
+  "storage": {
+    "root": {
+      "layout": {
+        "struct": {
+          "fields": [
+            {
+              "layout": {
+                "root": {
+                  "layout": {
+                    "leaf": {
+                      "key": "0x176f217b",
+                      "ty": 0
+                    }
+                  },
+                  "root_key": "0x176f217b"
+                }
+              },
+              "name": "accounts"
+            },
+            {
+              "layout": {
+                "leaf": {
+                  "key": "0x00000000",
+                  "ty": 1
+                }
+              },
+              "name": "token"
+            }
+          ],
+          "name": "Escrow"
+        }
+      },
+      "root_key": "0x00000000"
+    }
+  },
+  "types": [
+    {
+      "id": 0,
+      "type": {
+        "def": {
+          "primitive": "u128"
+        }
+      }
+    },
+    {
+      "id": 1,
+      "type": {
+        "def": {
+          "composite": {
+            "fields": [
+              {
+                "type": 2,
+                "typeName": "[u8; 32]"
+              }
+            ]
+          }
+        },
+        "path": ["ink_primitives", "types", "AccountId"]
+      }
+    },
+    {
+      "id": 2,
+      "type": {
+        "def": {
+          "array": {
+            "len": 32,
+            "type": 3
+          }
+        }
+      }
+    },
+    {
+      "id": 3,
+      "type": {
+        "def": {
+          "primitive": "u8"
+        }
+      }
+    },
+    {
+      "id": 4,
+      "type": {
+        "def": {
+          "variant": {
+            "variants": [
+              {
+                "fields": [
+                  {
+                    "type": 5
+                  }
+                ],
+                "index": 0,
+                "name": "Ok"
+              },
+              {
+                "fields": [
+                  {
+                    "type": 6
+                  }
+                ],
+                "index": 1,
+                "name": "Err"
+              }
+            ]
+          }
+        },
+        "params": [
+          {
+            "name": "T",
+            "type": 5
+          },
+          {
+            "name": "E",
+            "type": 6
+          }
+        ],
+        "path": ["Result"]
+      }
+    },
+    {
+      "id": 5,
+      "type": {
+        "def": {
+          "tuple": []
+        }
+      }
+    },
+    {
+      "id": 6,
+      "type": {
+        "def": {
+          "variant": {
+            "variants": [
+              {
+                "index": 1,
+                "name": "CouldNotReadInput"
+              }
+            ]
+          }
+        },
+        "path": ["ink_primitives", "LangError"]
+      }
+    },
+    {
+      "id": 7,
+      "type": {
+        "def": {
+          "variant": {
+            "variants": [
+              {
+                "fields": [
+                  {
+                    "type": 0
+                  }
+                ],
+                "index": 0,
+                "name": "Ok"
+              },
+              {
+                "fields": [
+                  {
+                    "type": 6
+                  }
+                ],
+                "index": 1,
+                "name": "Err"
+              }
+            ]
+          }
+        },
+        "params": [
+          {
+            "name": "T",
+            "type": 0
+          },
+          {
+            "name": "E",
+            "type": 6
+          }
+        ],
+        "path": ["Result"]
+      }
+    },
+    {
+      "id": 8,
+      "type": {
+        "def": {
+          "composite": {
+            "fields": [
+              {
+                "type": 2,
+                "typeName": "[u8; 32]"
+              }
+            ]
+          }
+        },
+        "path": ["ink_primitives", "types", "Hash"]
+      }
+    },
+    {
+      "id": 9,
+      "type": {
+        "def": {
+          "primitive": "u64"
+        }
+      }
+    },
+    {
+      "id": 10,
+      "type": {
+        "def": {
+          "primitive": "u32"
+        }
+      }
+    },
+    {
+      "id": 11,
+      "type": {
+        "def": {
+          "variant": {}
+        },
+        "path": ["ink_env", "types", "NoChainExtension"]
+      }
+    }
+  ],
+  "version": "4"
+}

@@ -9,6 +9,7 @@ edition = "2021"
 ink = { version = "4.2.0", default-features = false }
 ink_lang = { version = "3.4.0", default-features = false }
 ink_storage = { version = "4.2.0", default-features = false }
+ink_primitives = { version = "4.2.0", default-features = false }
 ink_env = { version = "4.2.0", default-features = false }
 ink_prelude = { version = "4.2.0", default-features = false }
 scale = { package = "parity-scale-codec", version = "3", default-features = false, features = ["derive"] }
@@ -34,6 +35,7 @@ std = [
     "scale/std",
     "scale-info/std",
     "psp22/std",
+    "ink_primitives/std",
 ]
 ink-as-dependency = []
 e2e-tests = []

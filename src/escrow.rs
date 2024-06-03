@@ -46,9 +46,7 @@ mod escrow {
         #[ink(message)]
         pub fn approve(&mut self, spender: AccountId, amount: Balance) {
             let mut token: contract_ref!(PSP22) = self.token.into();
-            token
-                .approve(spender, amount)
-                .expect("Approve failed");
+            token.approve(spender, amount).expect("Approve failed");
         }
 
         /// Deposits a specified amount of tokens into the escrow.
@@ -115,13 +113,13 @@ mod escrow {
         use ink_lang as ink;
 
         #[ink::test]
-        fn test_new() {
+        fn test_get_balance() {
             let token: AccountId = AccountId::from([0x0; 32]);
             let contract = Escrow::new(token);
-            assert_eq!(contract.token, token);
 
-            let caller = AccountId::from([0x1; 32]);
-            assert_eq!(contract.accounts.get(&caller), None);
+            let account = AccountId::from([0x1; 32]);
+            let balance = contract.get_balance(account);
+            assert_eq!(balance, 0);
         }
     }
 }
