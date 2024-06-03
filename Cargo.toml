@@ -1,25 +1,27 @@
 [package]
 name = "escrowcontract"
-version = "0.1.0"
-authors = ["[your_name] <[your_email]>"]
+version = "1.0.0"
+authors = ["Przemyslaw Kulej"]
 edition = "2021"
 
 [dependencies]
-ink = { version = "5.0.0", default-features = false, features = ["std"] }
-ink_storage = { version = "5.0.0", default-features = false, features = ["std"] }
-ink_env = { version = "5.0.0", default-features = false, features = ["std"] }
-ink_metadata = { version = "5.0.0", default-features = false, features = ["std"] }
-ink_lang = { version = "3.4.0", features = ["std"] }
-ink_prelude = { version = "5.0.0", default-features = false, features = ["std"] }
+
+ink = { version = "4.2.0", default-features = false }
+ink_lang = { version = "3.4.0", default-features = false }
+ink_storage = { version = "4.2.0", default-features = false }
+ink_env = { version = "4.2.0", default-features = false }
+ink_prelude = { version = "4.2.0", default-features = false }
 scale = { package = "parity-scale-codec", version = "3", default-features = false, features = ["derive"] }
 scale-info = { version = "2.3", default-features = false, features = ["derive"], optional = true }
-psp22 = { version = "2.0", default-features = false, features = ["ink-as-dependency"] }
+psp22 = { version = "1.0", default-features = false, features = ["ink-as-dependency"] }
+
+
 
 [dev-dependencies]
-ink_e2e = { version = "5.0.0" }
+ink_e2e = { version = "4.2.0" }
 
 [lib]
-path = "lib.rs"
+path = "src/escrow.rs"
 
 [features]
 default = ["std"]
@@ -28,7 +30,6 @@ std = [
     "ink_lang/std",
     "ink_env/std",
     "ink_storage/std",
-    "ink_metadata/std",
     "ink_prelude/std",
     "scale/std",
     "scale-info/std",
